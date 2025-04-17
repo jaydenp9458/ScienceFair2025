@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkers</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        .game-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .game-board {
+            width: 400px;
+            height: 400px;
+            margin: 20px auto;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            border: 2px solid #2c3e50;
+        }
+
+        .square {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .square.white {
+            background-color: #fff;
+        }
+
+        .square.gray {
+            background-color: #808080;
+        }
+
+        .square.selected {
+            background-color: #2ecc71;
+        }
+
+        .square.valid-move {
+            background-color: rgba(46, 204, 113, 0.5);
+        }
+
+        .piece {
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            transition: transform 0.2s;
+            position: relative;
+        }
+
+        .piece:hover {
+            transform: scale(1.1);
+        }
+
+        .piece.red {
+            background-color: #e74c3c;
+        }
+
+        .piece.blue {
+            background-color: #3498db;
+        }
+
+        .piece.king::after {
+            content: "♔";
+            color: white;
+            font-size: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .game-info {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .button:hover {
+            background-color: #2980b9;
+        }
+
+        .controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .ai-button {
+            padding: 8px 16px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 1rem;
+        }
+
+        .ai-button.active {
+            background-color: #2ecc71;
+        }
+
+        .ai-button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Jayden's Checkers Science Fair 2025</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="game-container">
+            <h2>Play Checkers</h2>
+            <div class="toggle-container">
+                <button id="ai-toggle" class="ai-button">Play vs Computer: OFF</button>
+            </div>
+            <div class="game-info" id="game-info">Blue's Turn</div>
+            <div class="game-board" id="game-board"></div>
+            <div class="controls">
+                <button class="button" id="reset-button">Reset Game</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class CheckersGame {
+            constructor() {
+                this.board = Array(8).fill().map(() => Array(8).fill(0));
+                this.selectedPiece = null;
+                this.currentPlayer = 2; // 1 for red, 2 for blue
+                this.gameBoard = document.getElementById('game-board');
+                this.gameInfo = document.getElementById('game-info');
+                this.resetButton = document.getElementById('reset-button');
+                this.aiToggle = document.getElementById('ai-toggle');
+                this.lastMoveWasCapture = false;
+                this.lastCapturePosition = null;
+                this.gameOver = false;
+                this.computerPlaying = false;
+                
+                this.initializeBoard();
+                this.setupEventListeners();
+            }
+
+            initializeBoard() {
+                // Clear the board
+                this.gameBoard.innerHTML = '';
+                
+                // Create the board squares
+                for (let row = 0; row < 8; row++) {
+                    for (let col = 0; col < 8; col++) {
+                        const square = document.createElement('div');
+                        square.className = `square ${(row + col) % 2 === 0 ? 'white' : 'gray'}`;
+                        square.dataset.row = row;
+                        square.dataset.col = col;
+                        this.gameBoard.appendChild(square);
+                    }
+                }
+                
+                // Place red pieces (1)
+                for (let row = 0; row < 3; row++) {
+                    for (let col = 0; col < 8; col++) {
+                        if ((row + col) % 2 === 1) {
+                            this.board[row][col] = 1;
+                        }
+                    }
+                }
+                
+                // Place blue pieces (2)
+                for (let row = 5; row < 8; row++) {
+                    for (let col = 0; col < 8; col++) {
+                        if ((row + col) % 2 === 1) {
+                            this.board[row][col] = 2;
+                        }
+                    }
+                }
+                
+                this.updateBoard();
+            }
+
+            setupEventListeners() {
+                this.gameBoard.addEventListener('click', (e) => {
+                    const square = e.target.closest('.square');
+                    if (!square) return;
+                    
+                    const row = parseInt(square.dataset.row);
+                    const col = parseInt(square.dataset.col);
+                    
+                    this.handleSquareClick(row, col);
+                });
+                
+                this.resetButton.addEventListener('click', () => {
+                    this.resetGame();
+                });
+                
+                this.aiToggle.addEventListener('click', () => {
+                    this.computerPlaying = !this.computerPlaying;
+                    
+                    // Update button style and text
+                    if (this.computerPlaying) {
+                        this.aiToggle.classList.add('active');
+                        this.aiToggle.textContent = 'Play vs Computer: ON';
+                    } else {
+                        this.aiToggle.classList.remove('active');
+                        this.aiToggle.textContent = 'Play vs Computer: OFF';
+                    }
+                    
+                    // If it's the computer's turn, make a move
+                    if (this.computerPlaying && this.currentPlayer === 1 && !this.gameOver) {
+                        this.makeComputerMove();
+                    }
+                });
+            }
+
+            handleSquareClick(row, col) {
+                // If the game is over, don't allow any moves
+                if (this.gameOver) {
+                    return;
+                }
+                
+                // If it's the computer's turn and computer mode is on, ignore clicks
+                if (this.computerPlaying && this.currentPlayer === 1) {
+                    return;
+                }
+                
+                const piece = this.board[row][col];
+                
+                // If a piece is already selected
+                if (this.selectedPiece) {
+                    const [selectedRow, selectedCol] = this.selectedPiece;
+                    
+                    // If clicking on the same piece, deselect it
+                    if (row === selectedRow && col === selectedCol) {
+                        this.selectedPiece = null;
+                        this.clearHighlights();
+                        return;
+                    }
+                    
+                    // If clicking on a valid move
+                    if (this.isValidMove(selectedRow, selectedCol, row, col)) {
+                        const wasCapture = this.makeMove(selectedRow, selectedCol, row, col);
+                        this.selectedPiece = null;
+                        this.clearHighlights();
+                        
+                        // Check for kings
+                        this.checkForKings();
+                        
+                        // If it was a capture and there are more captures available with the same piece
+                        if (wasCapture && this.hasMoreCaptures(row, col)) {
+                            // Keep the same player's turn
+                            this.lastMoveWasCapture = true;
+                            this.lastCapturePosition = [row, col];
+                            this.gameInfo.textContent = `${this.currentPlayer === 1 ? 'Red' : 'Blue'} must capture again!`;
+                            
+                            // Select the piece that just captured
+                            this.selectedPiece = [row, col];
+                            this.highlightValidMoves(row, col);
+                        } else {
+                            // Switch players
+                            this.currentPlayer = this.currentPlayer === 1 ? 2 : 1;
+                            this.gameInfo.textContent = `${this.currentPlayer === 1 ? 'Red' : 'Blue'}'s Turn`;
+                            this.lastMoveWasCapture = false;
+                            this.lastCapturePosition = null;
+                            
+                            // Check for game over after the move is completed
+                            if (this.isGameOver()) {
+                                this.gameOver = true;
+                            } else if (this.computerPlaying && this.currentPlayer === 1) {
+                                // Computer's turn
+                                setTimeout(() => this.makeComputerMove(), 500);
+                            }
+                        }
+                    } else {
+                        // If clicking on another piece of the same color, select it instead
+                        if (piece === this.currentPlayer || piece === this.currentPlayer + 2) {
+                            this.selectedPiece = [row, col];
+                            this.clearHighlights();
+                            this.highlightValidMoves(row, col);
+                        } else {
+                            this.selectedPiece = null;
+                            this.clearHighlights();
+                        }
+                    }
+                } 
+                // If no piece is selected and clicked on a piece of the current player
+                else if (piece === this.currentPlayer || piece === this.currentPlayer + 2) {
+                    // If the last move was a capture, only allow selecting the piece that captured
+                    if (this.lastMoveWasCapture && this.lastCapturePosition) {
+                        const [lastRow, lastCol] = this.lastCapturePosition;
+                        if (row !== lastRow || col !== lastCol) {
+                            return; // Ignore clicks on other pieces
+                        }
+                    }
+                    
+                    this.selectedPiece = [row, col];
+                    this.highlightValidMoves(row, col);
+                }
+                
+                this.updateBoard();
+            }
+
+            isValidMove(startRow, startCol, endRow, endCol) {
+                // Basic move validation
+                if (endRow < 0 || endRow >= 8 || endCol < 0 || endCol >= 8) {
+                    return false;
+                }
+                
+                if (this.board[endRow][endCol] !== 0) {
+                    return false;
+                }
+                
+                const piece = this.board[startRow][startCol];
+                if (piece === 0) {
+                    return false;
+                }
+                
+                // Check if it's the correct player's turn
+                if (piece !== this.currentPlayer && piece !== this.currentPlayer + 2) {
+                    return false;
+                }
+                
+                const rowDiff = endRow - startRow;
+                const colDiff = Math.abs(endCol - startCol);
+                
+                // Regular move (diagonal only)
+                if (Math.abs(rowDiff) === 1 && colDiff === 1) {
+                    // Kings can move in any direction
+                    if (piece === 3 || piece === 4) {
+                        return true;
+                    }
+                    
+                    // Regular pieces can only move in one direction
+                    if (piece === 1 && rowDiff < 0) {
+                        return false; // Red piece moving up
+                    }
+                    if (piece === 2 && rowDiff > 0) {
+                        return false; // Blue piece moving down
+                    }
+                    return true;
+                }
+                
+                // Jump move
+                if (Math.abs(rowDiff) === 2 && colDiff === 2) {
+                    const midRow = (startRow + endRow) / 2;
+                    const midCol = (startCol + endCol) / 2;
+                    
+                    // Check if there's an opponent's piece to jump over
+                    const capturedPiece = this.board[midRow][midCol];
+                    
+                    // Make sure the captured piece is an opponent's piece
+                    if (capturedPiece === 0) {
+                        return false; // No piece to capture
+                    }
+                    
+                    // Check if the captured piece is an opponent's piece
+                    if ((piece === 1 || piece === 3) && (capturedPiece === 1 || capturedPiece === 3)) {
+                        return false; // Can't capture your own piece (red)
+                    }
+                    if ((piece === 2 || piece === 4) && (capturedPiece === 2 || capturedPiece === 4)) {
+                        return false; // Can't capture your own piece (blue)
+                    }
+                    
+                    // Kings can move in any direction
+                    if (piece === 3 || piece === 4) {
+                        return true;
+                    }
+                    
+                    // Regular pieces can only move in one direction
+                    if (piece === 1 && rowDiff < 0) {
+                        return false; // Red piece moving up
+                    }
+                    if (piece === 2 && rowDiff > 0) {
+                        return false; // Blue piece moving down
+                    }
+                    return true;
+                }
+                
+                return false;
+            }
+
+            makeMove(startRow, startCol, endRow, endCol) {
+                // Move the piece
+                this.board[endRow][endCol] = this.board[startRow][startCol];
+                this.board[startRow][startCol] = 0;
+                
+                // Handle jump
+                if (Math.abs(endRow - startRow) === 2) {
+                    const midRow = (startRow + endRow) / 2;
+                    const midCol = (startCol + endCol) / 2;
+                    this.board[midRow][midCol] = 0;
+                    return true; // It was a capture
+                }
+                
+                return false; // It was not a capture
+            }
+
+            hasMoreCaptures(row, col) {
+                const piece = this.board[row][col];
+                
+                // Check all possible jump moves
+                for (let rowDiff of [-2, 2]) {
+                    for (let colDiff of [-2, 2]) {
+                        const newRow = row + rowDiff;
+                        const newCol = col + colDiff;
+                        
+                        if (this.isValidMove(row, col, newRow, newCol)) {
+                            return true;
+                        }
+                    }
+                }
+                
+                return false;
+            }
+
+            hasAnyCaptures(player) {
+                // Check if any piece of the current player can make a capture
+                for (let row = 0; row < 8; row++) {
+                    for (let col = 0; col < 8; col++) {
+                        if (this.board[row][col] === player || 
+                            (player === 1 && this.board[row][col] === 3) || 
+                            (player === 2 && this.board[row][col] === 4)) {
+                            
+                            // Check all possible jump moves
+                            for (let rowDiff of [-2, 2]) {
+                                for (let colDiff of [-2, 2]) {
+                                    const newRow = row + rowDiff;
+                                    const newCol = col + colDiff;
+                                    
+                                    if (this.isValidMove(row, col, newRow, newCol)) {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                return false;
+            }
+
+            highlightValidMoves(row, col) {
+                const piece = this.board[row][col];
+                
+                // Check all possible moves (regular and jump)
+                for (let rowDiff of [-2, -1, 1, 2]) {
+                    for (let colDiff of [-2, -1, 1, 2]) {
+                        // Skip non-diagonal moves
+                        if (Math.abs(rowDiff) !== Math.abs(colDiff)) {
+                            continue;
+                        }
+                        
+                        const newRow = row + rowDiff;
+                        const newCol = col + colDiff;
+                        
+                        // Check if the move is valid
+                        if (this.isValidMove(row, col, newRow, newCol)) {
+                            const square = this.getSquareElement(newRow, newCol);
+                            square.classList.add('valid-move');
+                        }
+                    }
+                }
+                
+                // Highlight selected piece
+                const selectedSquare = this.getSquareElement(row, col);
+                selectedSquare.classList.add('selected');
+            }
+
+            clearHighlights() {
+                const squares = document.querySelectorAll('.square');
+                squares.forEach(square => {
+                    square.classList.remove('selected', 'valid-move');
+                });
+            }
+
+            getSquareElement(row, col) {
+                return document.querySelector(`.square[data-row="${row}"][data-col="${col}"]`);
+            }
+
+            updateBoard() {
+                const squares = document.querySelectorAll('.square');
+                squares.forEach(square => {
+                    const row = parseInt(square.dataset.row);
+                    const col = parseInt(square.dataset.col);
+                    const piece = this.board[row][col];
+                    
+                    // Remove any existing pieces
+                    const existingPiece = square.querySelector('.piece');
+                    if (existingPiece) {
+                        square.removeChild(existingPiece);
+                    }
+                    
+                    // Add the piece if it exists
+                    if (piece !== 0) {
+                        const pieceElement = document.createElement('div');
+                        pieceElement.className = `piece ${piece === 1 || piece === 3 ? 'red' : 'blue'}`;
+                        
+                        // Check if it's a king
+                        if (piece === 3 || piece === 4) {
+                            pieceElement.classList.add('king');
+                        }
+                        
+                        square.appendChild(pieceElement);
+                    }
+                });
+            }
+
+            checkForKings() {
+                // Check for red kings (piece value 3)
+                for (let col = 0; col < 8; col++) {
+                    if (this.board[7][col] === 1) {
+                        this.board[7][col] = 3;
+                    }
+                }
+                
+                // Check for blue kings (piece value 4)
+                for (let col = 0; col < 8; col++) {
+                    if (this.board[0][col] === 2) {
+                        this.board[0][col] = 4;
+                    }
+                }
+            }
+
+            isGameOver() {
+                let redCount = 0;
+                let blueCount = 0;
+                
+                for (let row = 0; row < 8; row++) {
+                    for (let col = 0; col < 8; col++) {
+                        const piece = this.board[row][col];
+                        if (piece === 1 || piece === 3) {
+                            redCount++;
+                        } else if (piece === 2 || piece === 4) {
+                            blueCount++;
+                        }
+                    }
+                }
+                
+                // Return true if either player has no pieces left
+                if (redCount === 0 || blueCount === 0) {
+                    // Update the game info with the correct winner
+                    this.gameInfo.textContent = `Game Over! ${redCount === 0 ? 'Blue' : 'Red'} Wins!`;
+                    return true;
+                }
+                
+                // Check for stalemate
+                if (this.isStalemate()) {
+                    this.gameInfo.textContent = "Game Over! Stalemate - No legal moves available.";
+                    return true;
+                }
+                
+                return false;
+            }
+            
+            isStalemate() {
+                // Check if the current player has any legal moves
+                for (let row = 0; row < 8; row++) {
+                    for (let col = 0; col < 8; col++) {
+                        const piece = this.board[row][col];
+                        
+                        // Check if this is a piece of the current player
+                        if (piece === this.currentPlayer || piece === this.currentPlayer + 2) {
+                            // Check all possible moves
+                            for (let rowDiff of [-2, -1, 1, 2]) {
+                                for (let colDiff of [-2, -1, 1, 2]) {
+                                    // Skip non-diagonal moves
+                                    if (Math.abs(rowDiff) !== Math.abs(colDiff)) {
+                                        continue;
+                                    }
+                                    
+                                    const newRow = row + rowDiff;
+                                    const newCol = col + colDiff;
+                                    
+                                    // If there's at least one valid move, it's not a stalemate
+                                    if (this.isValidMove(row, col, newRow, newCol)) {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                // If we get here, the current player has no legal moves
+                return true;
+            }
+
+            resetGame() {
+                this.board = Array(8).fill().map(() => Array(8).fill(0));
+                this.selectedPiece = null;
+                this.currentPlayer = 2;
+                this.lastMoveWasCapture = false;
+                this.lastCapturePosition = null;
+                this.gameOver = false;
+                this.gameInfo.textContent = "Blue's Turn";
+                this.initializeBoard();
+                
+                // If computer is enabled and it's red's turn, make a computer move
+                if (this.computerPlaying && this.currentPlayer === 1) {
+                    setTimeout(() => this.makeComputerMove(), 500);
+                }
+            }
+            
+            makeComputerMove() {
+                if (this.gameOver || this.currentPlayer !== 1) {
+                    return;
+                }
+                
+                // Find all possible moves
+                const possibleMoves = [];
+                const captureMoves = [];
+                
+                // Check if there's a forced capture from the last capture
+                if (this.lastMoveWasCapture && this.lastCapturePosition) {
+                    const [row, col] = this.lastCapturePosition;
+                    
+                    // Find all capture moves for this piece
+                    for (let rowDiff of [-2, 2]) {
+                        for (let colDiff of [-2, 2]) {
+                            const newRow = row + rowDiff;
+                            const newCol = col + colDiff;
+                            
+                            if (this.isValidMove(row, col, newRow, newCol)) {
+                                captureMoves.push([row, col, newRow, newCol]);
+                            }
+                        }
+                    }
+                    
+                    // If there are captures, randomly choose one
+                    if (captureMoves.length > 0) {
+                        const randomIndex = Math.floor(Math.random() * captureMoves.length);
+                        const [startRow, startCol, endRow, endCol] = captureMoves[randomIndex];
+                        
+                        // Make the move
+                        this.selectedPiece = [startRow, startCol];
+                        this.makeComputerMoveExecute(endRow, endCol);
+                        return;
+                    }
+                } else {
+                    // Find all pieces that can be moved
+                    for (let row = 0; row < 8; row++) {
+                        for (let col = 0; col < 8; col++) {
+                            const piece = this.board[row][col];
+                            
+                            // Check if this is a red piece (1) or a red king (3)
+                            if (piece === 1 || piece === 3) {
+                                // Check all possible moves
+                                for (let rowDiff of [-2, -1, 1, 2]) {
+                                    for (let colDiff of [-2, -1, 1, 2]) {
+                                        // Skip non-diagonal moves
+                                        if (Math.abs(rowDiff) !== Math.abs(colDiff)) {
+                                            continue;
+                                        }
+                                        
+                                        const newRow = row + rowDiff;
+                                        const newCol = col + colDiff;
+                                        
+                                        if (this.isValidMove(row, col, newRow, newCol)) {
+                                            // Check if it's a capture move
+                                            if (Math.abs(rowDiff) === 2) {
+                                                captureMoves.push([row, col, newRow, newCol]);
+                                            } else {
+                                                possibleMoves.push([row, col, newRow, newCol]);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                // Prioritize captures
+                if (captureMoves.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * captureMoves.length);
+                    const [startRow, startCol, endRow, endCol] = captureMoves[randomIndex];
+                    
+                    // Make the move
+                    this.selectedPiece = [startRow, startCol];
+                    this.makeComputerMoveExecute(endRow, endCol);
+                } else if (possibleMoves.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * possibleMoves.length);
+                    const [startRow, startCol, endRow, endCol] = possibleMoves[randomIndex];
+                    
+                    // Make the move
+                    this.selectedPiece = [startRow, startCol];
+                    this.makeComputerMoveExecute(endRow, endCol);
+                } else {
+                    // No moves available, check for stalemate
+                    this.isGameOver();
+                }
+            }
+            
+            makeComputerMoveExecute(row, col) {
+                const [selectedRow, selectedCol] = this.selectedPiece;
+                
+                // If clicking on a valid move
+                if (this.isValidMove(selectedRow, selectedCol, row, col)) {
+                    const wasCapture = this.makeMove(selectedRow, selectedCol, row, col);
+                    this.selectedPiece = null;
+                    this.clearHighlights();
+                    
+                    // Check for kings
+                    this.checkForKings();
+                    
+                    // If it was a capture and there are more captures available with the same piece
+                    if (wasCapture && this.hasMoreCaptures(row, col)) {
+                        // Keep the same player's turn
+                        this.lastMoveWasCapture = true;
+                        this.lastCapturePosition = [row, col];
+                        this.gameInfo.textContent = `${this.currentPlayer === 1 ? 'Red' : 'Blue'} must capture again!`;
+                        
+                        // Make another capture move
+                        setTimeout(() => {
+                            this.selectedPiece = [row, col];
+                            this.makeComputerMove();
+                        }, 500);
+                    } else {
+                        // Switch players
+                        this.currentPlayer = this.currentPlayer === 1 ? 2 : 1;
+                        this.gameInfo.textContent = `${this.currentPlayer === 1 ? 'Red' : 'Blue'}'s Turn`;
+                        this.lastMoveWasCapture = false;
+                        this.lastCapturePosition = null;
+                        
+                        // Check for game over after the move is completed
+                        if (this.isGameOver()) {
+                            this.gameOver = true;
+                        }
+                    }
+                    
+                    this.updateBoard();
+                }
+            }
+        }
+
+        // Initialize the game when the page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            new CheckersGame();
+        });
+    </script>
+</body>
+</html> 

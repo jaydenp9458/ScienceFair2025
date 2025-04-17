@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Jayden's Chess Science Fair 2025</h1>
+        <div class="game-info">
+            <div id="status">White to move</div>
+            <div id="turn-indicator">Current turn: <span id="current-turn">White</span></div>
+        </div>
+        <div class="chessboard" id="chessboard"></div>
+        
+        <!-- Check notification -->
+        <div id="check-notification">CHECK</div>
+        
+        <!-- Checkmate notification -->
+        <div id="checkmate-notification">
+            <div class="checkmate-content">
+                <h2>Checkmate!</h2>
+                <p id="winner-text"></p>
+                <button id="new-game-button">New Game</button>
+            </div>
+        </div>
+        
+        <!-- Stalemate notification -->
+        <div id="stalemate-notification">
+            <div class="stalemate-content">
+                <h2>Stalemate!</h2>
+                <p>The game is a draw.</p>
+                <button id="stalemate-new-game-button">New Game</button>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button id="reset-button">New Game</button>
+            <div class="computer-toggle-container">
+                <span>Play vs Computer:</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="computer-toggle">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- Promotion modal -->
+        <div id="promotion-modal" class="modal">
+            <div class="modal-content">
+                <h2>Promote Pawn</h2>
+                <p>Select a piece to promote your pawn:</p>
+                <div class="promotion-options">
+                    <div class="promotion-piece" data-piece="queen">♛</div>
+                    <div class="promotion-piece" data-piece="rook">♜</div>
+                    <div class="promotion-piece" data-piece="bishop">♝</div>
+                    <div class="promotion-piece" data-piece="knight">♞</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 

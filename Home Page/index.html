@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 Science Fair</title>
+    <link rel="stylesheet" href="styles.css/styles.css">
+    <style>
+        .blackjack-card {
+            background-image: url('site2/217-2179664_clipart-card-game-cartoon-playing-cards-png.png');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .blackjack-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            z-index: 0;
+        }
+        
+        .blackjack-card h2, .blackjack-card p, .blackjack-card a {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .game-2048-card {
+            background-image: url('site1/2048-Fibonacci.png');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .game-2048-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            z-index: 0;
+        }
+        
+        .game-2048-card h2, .game-2048-card p, .game-2048-card a {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .block-blast-card {
+            background-image: url('site3/block-blast-logo.png');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .block-blast-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            z-index: 0;
+        }
+        
+        .block-blast-card h2, .block-blast-card p, .block-blast-card a {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .candy-crush-card {
+            background-image: url('site4/3925220.webp');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .candy-crush-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            z-index: 0;
+        }
+        
+        .candy-crush-card h2, .candy-crush-card p, .candy-crush-card a {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .checkers-card {
+            background-image: url('site5/1338264748_9dcb8_checkers-corbismkb.jpg.crdownload');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .checkers-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            z-index: 0;
+        }
+        
+        .checkers-card h2, .checkers-card p, .checkers-card a {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .chess-card {
+            background-image: url('site6/chess-icon-design-free-vector.jpg');
+            background-size: 70%;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: relative;
+        }
+        
+        .chess-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            z-index: 0;
+        }
+        
+        .chess-card h2, .chess-card p, .chess-card a {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .connect4-card {
+            background-image: url('site7/connect-four-clipart-10.png');
+            background-size: 80%;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: relative;
+        }
+        
+        .connect4-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            z-index: 0;
+        }
+        
+        .connect4-card h2, .connect4-card p, .connect4-card a {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .dots-boxes-card {
+            background-image: url('site8/front.png');
+            background-size: 80%;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: relative;
+        }
+        
+        .dots-boxes-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            z-index: 0;
+        }
+        
+        .dots-boxes-card h2, .dots-boxes-card p, .dots-boxes-card a {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .mancala-card {
+            background-image: url('site9/th.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .mancala-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            z-index: 0;
+        }
+        
+        .mancala-card h2, .mancala-card p, .mancala-card a {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .pacman-card {
+            background-image: url('site10/Pac_Man-1024.webp');
+            background-size: 80%;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: relative;
+        }
+        
+        .pacman-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            z-index: 0;
+        }
+        
+        .pacman-card h2, .pacman-card p, .pacman-card a {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .snake-card {
+            background-image: url('site11/google-snake-1078098.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .snake-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            z-index: 0;
+        }
+        
+        .snake-card h2, .snake-card p, .snake-card a {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .solitaire-card {
+            background-image: url('site12/th.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .solitaire-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            z-index: 0;
+        }
+        
+        .solitaire-card h2, .solitaire-card p, .solitaire-card a {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .tictactoe-card {
+            background-image: url('site13/1865460.png');
+            background-size: 80%;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: relative;
+        }
+        
+        .tictactoe-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            z-index: 0;
+        }
+        
+        .tictactoe-card h2, .tictactoe-card p, .tictactoe-card a {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .coming-soon-card {
+            background-image: url('https://cdn-icons-png.flaticon.com/512/6357/6357059.png');
+            background-size: 60%;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: relative;
+        }
+        
+        .coming-soon-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            z-index: 0;
+        }
+        
+        .coming-soon-card h2, .coming-soon-card p, .coming-soon-card a {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Jayden's Game Hub Science Fair 2025</h1>
+            <p>Your central navigation point to classic games</p>
+        </header>
+        
+        <main class="link-grid">
+            <!-- Links directly to game files -->
+            <div class="link-card game-2048-card">
+                <h2>2048</h2>
+                <p>Classic sliding puzzle game</p>
+                <a href="site1/2048/index.html" target="_blank">Play Game</a>
+            </div>
+            
+            <div class="link-card blackjack-card">
+                <h2>Blackjack</h2>
+                <p>Card game of 21</p>
+                <a href="site2/Blackjack/index.html" target="_blank">Play Game</a>
+            </div>
+            
+            <div class="link-card block-blast-card">
+                <h2>Block Blast</h2>
+                <p>Puzzle block game</p>
+                <a href="site3/Block Blast/web.html" target="_blank">Play Game</a>
+            </div>
+            
+            <div class="link-card candy-crush-card">
+                <h2>Candy Crush</h2>
+                <p>Match-3 puzzle game</p>
+                <a href="site4/Candy Crush/index.html" target="_blank">Play Game</a>
+            </div>
+            
+            <div class="link-card checkers-card">
+                <h2>Checkers</h2>
+                <p>Classic board game</p>
+                <a href="site5/Checkers/web.html" target="_blank">Play Game</a>
+            </div>
+            
+            <div class="link-card chess-card">
+                <h2>Chess</h2>
+                <p>Strategic board game</p>
+                <a href="site6/Chess/index.html" target="_blank">Play Game</a>
+            </div>
+            
+            <div class="link-card connect4-card">
+                <h2>Connect 4</h2>
+                <p>Vertical four-in-a-row game</p>
+                <a href="site7/Connect 4/index.html" target="_blank">Play Game</a>
+            </div>
+            
+            <div class="link-card dots-boxes-card">
+                <h2>Dots and Boxes</h2>
+                <p>Connect dots to form boxes</p>
+                <a href="site8/Dots and Boxes/index.html" target="_blank">Play Game</a>
+            </div>
+            
+            <div class="link-card mancala-card">
+                <h2>Mancala</h2>
+                <p>Ancient counting game</p>
+                <a href="site9/Mancala/index.html" target="_blank">Play Game</a>
+            </div>
+            
+            <div class="link-card pacman-card">
+                <h2>Pac-Man</h2>
+                <p>Classic arcade game</p>
+                <a href="site10/Pac-Man/index.html" target="_blank">Play Game</a>
+            </div>
+            
+            <div class="link-card snake-card">
+                <h2>Snake</h2>
+                <p>Grow your snake by eating food</p>
+                <a href="site11/Snake/index.html" target="_blank">Play Game</a>
+            </div>
+            
+            <div class="link-card solitaire-card">
+                <h2>Solitaire</h2>
+                <p>Card patience game</p>
+                <a href="site12/Solitaire/web.html" target="_blank">Play Game</a>
+            </div>
+            
+            <div class="link-card tictactoe-card">
+                <h2>Tic-Tac-Toe</h2>
+                <p>Classic X and O game</p>
+                <a href="site13/Tic-Tac-Toe/web.html" target="_blank">Play Game</a>
+            </div>
+            
+            <div class="link-card coming-soon-card">
+                <h2>Coming Soon</h2>
+                <p>More games to be added</p>
+                <a href="site14/index.html" target="_blank">Play Game</a>
+            </div>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 Jayden's Game Hub Science Fair</p>
+        </footer>
+    </div>
+</body>
+</html> 

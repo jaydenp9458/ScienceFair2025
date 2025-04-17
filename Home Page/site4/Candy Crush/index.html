@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candy Crush</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1 class="game-title">Jayden's Candy Crush Science Fair 2025</h1>
+    <div class="game-container">
+        <div class="game-header">
+            <div class="difficulty-selector">
+                <button class="difficulty-btn selected" data-difficulty="easy">Easy</button>
+                <button class="difficulty-btn" data-difficulty="medium">Medium</button>
+                <button class="difficulty-btn" data-difficulty="hard">Hard</button>
+            </div>
+            <div class="game-info">
+                <div class="score-board">
+                    <span>Score: </span>
+                    <span id="score">0</span>
+                    <span> / </span>
+                    <span id="target-score">100</span>
+                </div>
+                <div class="moves-board">
+                    <span>Moves Left: </span>
+                    <span id="moves">20</span>
+                </div>
+            </div>
+        </div>
+        <div id="board"></div>
+        <button id="restart-btn">Restart Game</button>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html> 
