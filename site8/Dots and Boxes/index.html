@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dots and Boxes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Jayden's Dots and Boxes Science Fair 2025</h1>
+        
+        <div class="game-info">
+            <div class="player player1 active">
+                <div class="player-label">Player 1</div>
+                <div class="player-score">0</div>
+            </div>
+            <div class="game-status">Player 1's turn</div>
+            <div class="player player2">
+                <div class="player-label">Player 2</div>
+                <div class="player-score">0</div>
+            </div>
+        </div>
+        
+        <div class="game-board" id="game-board"></div>
+        
+        <div class="controls">
+            <button id="new-game-btn">New Game</button>
+            <div class="computer-toggle">
+                <label class="switch">
+                    <input type="checkbox" id="computer-player">
+                    <span class="slider round"></span>
+                </label>
+                <span class="toggle-label">Play against computer</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 

@@ -1,0 +1,345 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 650px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.game-info {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.chessboard {
+    width: 600px;
+    height: 600px;
+    margin: 0 auto;
+    border: 2px solid #333;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+}
+
+.square {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    cursor: pointer;
+    position: relative;
+}
+
+.white {
+    background-color: #f0d9b5;
+}
+
+.black {
+    background-color: #b58863;
+}
+
+.selected {
+    background-color: #aec6cf;
+}
+
+.valid-move {
+    position: relative;
+}
+
+.valid-move::before {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.controls {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.computer-toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Toggle switch styling */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+    background-color: #4CAF50;
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(26px);
+}
+
+#reset-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#reset-button:hover {
+    background-color: #45a049;
+}
+
+/* Promotion modal styling */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 10;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #a0c8ff;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    max-width: 400px;
+}
+
+.promotion-options {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.promotion-piece {
+    font-size: 50px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.promotion-piece:hover {
+    background-color: #e0e0e0;
+}
+
+/* White pieces styling */
+.square:nth-child(n):has(div[class^="white-piece"]),
+.promotion-piece[data-piece][data-color="white"] {
+    color: white;
+}
+
+/* Check notification styling */
+#check-notification {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 80px;
+    font-weight: bold;
+    color: black;
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+    z-index: 5;
+    display: none;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#check-notification.show {
+    display: block;
+    opacity: 1;
+    animation: fadeOut 1.5s forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Checkmate notification styling */
+#checkmate-notification {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 20;
+    justify-content: center;
+    align-items: center;
+    animation: slideDown 0.5s ease-in-out;
+}
+
+#checkmate-notification.show {
+    display: flex;
+}
+
+.checkmate-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.checkmate-content h2 {
+    color: #d81e1e;
+    font-size: 36px;
+    margin-bottom: 15px;
+}
+
+#winner-text {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+#new-game-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#new-game-button:hover {
+    background-color: #45a049;
+}
+
+@keyframes slideDown {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Stalemate notification styling */
+#stalemate-notification {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 20;
+    justify-content: center;
+    align-items: center;
+    animation: slideDown 0.5s ease-in-out;
+}
+
+#stalemate-notification.show {
+    display: flex;
+}
+
+.stalemate-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.stalemate-content h2 {
+    color: #3f51b5;
+    font-size: 36px;
+    margin-bottom: 15px;
+}
+
+#stalemate-new-game-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#stalemate-new-game-button:hover {
+    background-color: #45a049;
+} 

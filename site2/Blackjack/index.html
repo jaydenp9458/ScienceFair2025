@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackjack</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1>Jayden's Blackjack Science Fair 2025</h1>
+        
+        <div class="stats">
+            <div class="streak">Current Streak: <span id="current-streak">0</span></div>
+            <div class="best-streak">Best Streak: <span id="best-streak">0</span></div>
+        </div>
+
+        <div class="dealer-area">
+            <h2>Dealer's Hand <span id="dealer-score" class="score"></span></h2>
+            <div id="dealer-cards" class="cards"></div>
+        </div>
+
+        <div class="player-area">
+            <h2>Your Hand <span id="player-score" class="score"></span></h2>
+            <div id="player-cards" class="cards"></div>
+        </div>
+
+        <div class="controls">
+            <button id="hit-button">Hit</button>
+            <button id="stand-button">Stand</button>
+            <button id="new-game-button">New Game</button>
+        </div>
+
+        <div id="message" class="message"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
