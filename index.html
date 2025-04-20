@@ -103,7 +103,7 @@
         }
         
         .checkers-card {
-            background-image: url('site5/1338264748_9dcb8_checkers-corbismkb.jpg.crdownload');
+            background-image: url('site5/1338264748_9dcb8_checkers-corbismkb.jpg');
             background-size: cover;
             background-position: center;
             position: relative;
@@ -324,7 +324,7 @@
         }
         
         .coming-soon-card {
-            background-image: url('https://cdn-icons-png.flaticon.com/512/6357/6357059.png');
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/f/f9/UNO_Logo.svg');
             background-size: 60%;
             background-repeat: no-repeat;
             background-position: center;
@@ -347,6 +347,31 @@
             position: relative;
             z-index: 1;
         }
+        
+        .new-coming-soon-card {
+            background-image: url('https://cdn-icons-png.flaticon.com/512/6357/6357059.png');
+            background-size: 60%;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: relative;
+        }
+        
+        .new-coming-soon-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            z-index: 0;
+        }
+        
+        .new-coming-soon-card h2, .new-coming-soon-card p, .new-coming-soon-card a {
+            position: relative;
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
@@ -358,10 +383,10 @@
         
         <main class="link-grid">
             <!-- Links directly to game files -->
-            <div class="link-card game-2048-card">
-                <h2>2048</h2>
-                <p>Classic sliding puzzle game</p>
-                <a href="site1/2048/index.html" target="_blank">Play Game</a>
+            <div class="link-card pacman-card">
+                <h2>Pac-Man</h2>
+                <p>Classic arcade game</p>
+                <a href="site10/Pac-Man/index.html" target="_blank">Play Game</a>
             </div>
             
             <div class="link-card blackjack-card">
@@ -412,10 +437,10 @@
                 <a href="site9/Mancala/index.html" target="_blank">Play Game</a>
             </div>
             
-            <div class="link-card pacman-card">
-                <h2>Pac-Man</h2>
-                <p>Classic arcade game</p>
-                <a href="site10/Pac-Man/index.html" target="_blank">Play Game</a>
+            <div class="link-card game-2048-card">
+                <h2>2048</h2>
+                <p>Classic sliding puzzle game</p>
+                <a href="site1/2048/index.html" target="_blank">Play Game</a>
             </div>
             
             <div class="link-card snake-card">
@@ -437,9 +462,14 @@
             </div>
             
             <div class="link-card coming-soon-card">
+                <h2>Uno</h2>
+                <p>Classic card game</p>
+                <a href="site14/Uno/index.html" target="_blank">Play Game</a>
+            </div>
+            
+            <div class="link-card new-coming-soon-card">
                 <h2>Coming Soon</h2>
                 <p>More games to be added</p>
-                <a href="site14/index.html" target="_blank">Play Game</a>
             </div>
         </main>
         

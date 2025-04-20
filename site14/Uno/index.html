@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uno </title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <h1>Jayden's Uno Science Fair 2025</h1>
+            <div class="game-options">
+            </div>
+        </div>
+        
+        <div class="game-board">
+            <div class="deck-area">
+                <div class="discard-pile" id="discardPile"></div>
+            </div>
+            
+            <div class="players-area">
+                <div class="players-container" id="playersContainer"></div>
+            </div>
+        </div>
+
+        <div class="game-controls">
+            <button id="startGame">Start Game</button>
+            <button id="drawCard">Draw Card</button>
+            <div class="current-player">Current Player: <span id="currentPlayerName">-</span></div>
+        </div>
+    </div>
+
+    <!-- Color Selection Popup -->
+    <div id="colorPopup" class="color-popup">
+        <div class="color-popup-content">
+            <h3>Choose a Color</h3>
+            <div class="color-options">
+                <button class="color-btn red" data-color="red">Red</button>
+                <button class="color-btn blue" data-color="blue">Blue</button>
+                <button class="color-btn green" data-color="green">Green</button>
+                <button class="color-btn yellow" data-color="yellow">Yellow</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- UNO Prompt -->
+    <div id="unoPrompt" class="notification-popup">
+        <div class="notification-content">
+            <h2>UNO!</h2>
+            <p>You have one card left!</p>
+            <button id="unoButton">Say UNO!</button>
+        </div>
+    </div>
+
+    <!-- Win Notification -->
+    <div id="winNotification" class="notification-popup">
+        <div class="notification-content">
+            <h2>🎉 Game Over! 🎉</h2>
+            <p><span class="winner-name"></span> has won!</p>
+            <div class="notification-buttons">
+                <button id="playAgainBtn">Play Again</button>
+                <button id="quitToMenuBtn">Quit to Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html> 
